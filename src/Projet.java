@@ -3,7 +3,7 @@ import java.util.Date;
 /**
  * Created by Corentin on 20/10/2015.
  */
-public class Projet {
+public class Projet implements Comparable<Projet> {
 
     private final Date DATE_DEBUT = new Date(2017,01,01);
 
@@ -56,5 +56,9 @@ public class Projet {
 
     public void setNomProjet(String nomProjet) {
         this.nomProjet = nomProjet;
+    }
+
+    public int compareTo(Projet projet) {
+        return this.getDateFin().compareTo(projet.getDateFin());
     }
 }

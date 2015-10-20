@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * Created by Corentin on 20/10/2015.
@@ -25,6 +26,7 @@ public class main {
     }
 
     private static boolean testFaisabiliteGlobale(ArrayList<Projet> listeProjets, ArrayList<Employe> listeEmployes) {
+        Collections.sort(listeProjets);
 
         return false;
     }
