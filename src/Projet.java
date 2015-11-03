@@ -22,6 +22,18 @@ public class Projet implements Comparable<Projet> {
         this.nomProjet = nomProjet;
     }
 
+
+    @Override
+    public String toString() {
+        return "Projet{" +
+                "DATE_DEBUT=" + DATE_DEBUT +
+                ", dateFin=" + dateFin +
+                ", nbJoursDev=" + nbJoursDev +
+                ", nbJoursGestion=" + nbJoursGestion +
+                ", nomProjet='" + nomProjet + '\'' +
+                '}';
+    }
+
     public Date getDATE_DEBUT() {
         return DATE_DEBUT;
     }

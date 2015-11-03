@@ -3,24 +3,28 @@
  */
 public class Employe {
 
-    public enum Role{
-        Chef_de_Projet,
-        Developpeur
+    public enum Poste {
+        Chef_de_Projet,     //gestion
+        Resp_technique,     //dev
+        Developpeur         //dev
+    }
+
+    public enum Role {
+        Dev,
+        Gestion
     }
 
     private String nom;
     private String prenom;
-    private Role role;
-    private int efficience;
+    private Poste poste;
 
     public Employe() {
     }
 
-    public Employe(String nom, String prenom, Role role, int efficience) {
+    public Employe(String nom, String prenom, Poste poste) {
         this.nom = nom;
         this.prenom = prenom;
-        this.role = role;
-        this.efficience = efficience;
+        this.poste = poste;
     }
 
     public String getNom() {
@@ -39,19 +43,11 @@ public class Employe {
         this.prenom = prenom;
     }
 
-    public Role getRole() {
-        return role;
+    public Poste getPoste() {
+        return poste;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public int getEfficience() {
-        return efficience;
-    }
-
-    public void setEfficience(int efficience) {
-        this.efficience = efficience;
+    public void setPoste(Poste poste) {
+        this.poste = poste;
     }
 }
