@@ -25,7 +25,10 @@ public class Utils {
 
     private static Map<String, Date> jourFeries = new HashMap<>();
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    public static String dateToSimpleString(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(date);
+    }
 
     public static boolean estJourTravaille(Date dateJour) {
         Calendar calendar = Calendar.getInstance();
