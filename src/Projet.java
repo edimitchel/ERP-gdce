@@ -5,8 +5,6 @@ import java.util.Date;
  */
 public class Projet implements Comparable<Projet> {
 
-    private final Date DATE_DEBUT = new Date(2017,01,01);
-
     private Date dateFin;
     private int nbJoursDev;
     private int nbJoursGestion;
@@ -20,22 +18,6 @@ public class Projet implements Comparable<Projet> {
         this.nbJoursDev = nbJoursDev;
         this.nbJoursGestion = nbJoursGestion;
         this.nomProjet = nomProjet;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Projet{" +
-                "DATE_DEBUT=" + DATE_DEBUT +
-                ", dateFin=" + dateFin +
-                ", nbJoursDev=" + nbJoursDev +
-                ", nbJoursGestion=" + nbJoursGestion +
-                ", nomProjet='" + nomProjet + '\'' +
-                '}';
-    }
-
-    public Date getDATE_DEBUT() {
-        return DATE_DEBUT;
     }
 
     public Date getDateFin() {
