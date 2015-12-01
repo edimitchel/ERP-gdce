@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.text.DateFormat;
 import java.util.*;
 
@@ -6,7 +8,11 @@ import java.util.*;
  */
 public class main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+
+        PrintStream ps = new PrintStream("file.txt");
+        PrintStream orig = System.out;
+        System.setOut(ps);
 
         /// QUESTIONS A , B , C
 
@@ -24,26 +30,26 @@ public class main {
         listeEmployes.add(new Employe("Pepsi", "Cola", Employe.Poste.Developpeur, initDate(2017, 1, 1)));
         listeEmployes.add(new Employe("Adibou", "Mitchell", Employe.Poste.Developpeur, initDate(2017, 1, 1)));
 
-        testFaisabiliteGlobale(listeProjets, listeEmployes, 100);
-        testFaisabiliteGlobale(listeProjets, listeEmployes, 80);
+        evalationRecrutement(listeProjets, listeEmployes, 100);
+        System.out.println("----------------------------------------");
+        evalationRecrutement(listeProjets, listeEmployes, 80);
 
-        /// QUESTION D
 
-        System.out.println("\nQUESTION D\n");
+        System.out.println("\n############################################");
+
+        /// QUESTION D , E
+
+        System.out.println("\nQUESTION D , E\n");
 
         listeProjets.add(new Projet(initDate(2017, 9, 1), 400, 80, "AIRBOSS"));
 
-        testFaisabiliteGlobale(listeProjets, listeEmployes, 100);
-        testFaisabiliteGlobale(listeProjets, listeEmployes, 80);
-
-        /// QUESTION E
-
-        System.out.println("\nQUESTION E\n");
-
-        //todo : faire une fonction
-
         evalationRecrutement(listeProjets, listeEmployes, 100);
+        System.out.println("----------------------------------------");
         evalationRecrutement(listeProjets, listeEmployes, 80);
+
+
+        System.setOut(orig);
+        ps.close();
     }
 
     public static void evalationRecrutement(ArrayList<Projet> listeProjets, ArrayList<Employe> listeEmployes, int efficience){
@@ -56,24 +62,33 @@ public class main {
             switch (res){
                 case 1 :
                     nbDEV++;
-                    System.out.println("Ajout d'un nouveau DEV et relance de la simumlation");
+                    System.out.println("Ajout d'un nouveau developpeur");
+                    System.out.println("Relance de la simulation");
+                    System.out.println("- - - - - - - - - - - - - - - - - - - -");
                     listeEmployesCopie.add(new Employe("Baby", "LoupDev_"+(i++), Employe.Poste.Developpeur, initDate(2017, 5, 1)));
                     break;
                 case 2 :
                     nbGEST++;
-                    System.out.println("Ajout d'un nouveau Chef de projet et relance de la simumlation");
+                    System.out.println("Ajout d'un nouvel assistant en gestion");
+                    System.out.println("Relance de la simulation");
+                    System.out.println("- - - - - - - - - - - - - - - - - - - -");
                     listeEmployesCopie.add(new Employe("Baby", "LoupGest_"+(i++), Employe.Poste.Assistant_Gestion, initDate(2017, 5, 1)));
                     break;
                 case 3 :
                     nbGEST++;
                     nbDEV++;
-                    System.out.println("Ajout d'un nouveau DEV et d'un Chef de projet et relance de la simumlation");
+                    System.out.println("Ajout d'un nouveau developpeur et d'un nouvel assistant en gestion");
+                    System.out.println("Relance de la simulation");
+                    System.out.println("- - - - - - - - - - - - - - - - - - - -");
                     listeEmployesCopie.add(new Employe("Baby", "LoupDev_"+(i++), Employe.Poste.Developpeur, initDate(2017, 5, 1)));
                     listeEmployesCopie.add(new Employe("Baby", "LoupGest_"+(i++), Employe.Poste.Assistant_Gestion, initDate(2017, 5, 1)));
                     break;
             }
         }
-        System.out.println("Nous avons du embaucher "+nbDEV+" developpeurs et "+nbGEST+" chef de projets.");
+        if(nbDEV+nbGEST == 0)
+            System.out.println("Aucune embauche requise");
+        else
+            System.out.println("Nous avons du embaucher "+nbDEV+" developpeurs et "+nbGEST+" en gestion.");
     }
 
 
@@ -94,12 +109,13 @@ public class main {
         int result = 0;
 
         Date currentDate_dev, currentDate_ges;
-        System.out.println("Avec une efficience de "+efficience+"% :");
 
         Collections.sort(listeProjets);
 
         currentDate_dev = initDate(2017, 1, 1);
         currentDate_ges = initDate(2017, 1, 1);
+
+        System.out.println("Avec une efficience de "+efficience+"%");
 
         for(Projet projet : listeProjets){
             float coef = 100.f / efficience;
@@ -135,17 +151,19 @@ public class main {
             }
 
             if(result != 0){
-                System.out.println("\tIl sera impossible de finir le projet "+projet.getNomProjet()+" dans les temps. Date de fin effective : " + Utils.dateToSimpleString(endDate));
+                System.out.println("\tIl sera impossible de finir le projet "+projet.getNomProjet()+" dans les temps. Date de fin effective : "
+                        + Utils.dateToSimpleString(endDate)+" - "+getEffectif(Employe.Role.Dev,listeEmployes,endDate)
+                        +" dev, "+getEffectif(Employe.Role.Gestion,listeEmployes,endDate)+" gestion");
                 return result;
             }
             else{
-                System.out.println("\tLe projet "+projet.getNomProjet()+" sera fini dans les temps. Date de fin effective : " + Utils.dateToSimpleString(endDate));
+                System.out.println("\tLe projet "+projet.getNomProjet()+" sera fini dans les temps. Date de fin effective : " + Utils.dateToSimpleString(endDate)
+                        +" - "+getEffectif(Employe.Role.Dev, listeEmployes, endDate)
+                        +" dev, "+getEffectif(Employe.Role.Gestion, listeEmployes, endDate)+" gestion");
             }
             currentDate_dev = endDate;
             currentDate_ges = endDate;
         }
-        System.out.println("-------------");
-
         return result;
     }
 
@@ -153,7 +171,7 @@ public class main {
     private static int getEffectif(Employe.Role role, ArrayList<Employe> listeEmployes, Date currentDate){
         int effectif = 0;
         for(Employe employe : listeEmployes){
-            if(!employe.getDateDispo().after(currentDate)) {
+            if(currentDate == null || !employe.getDateDispo().after(currentDate)) {
                 if (role == Employe.Role.Dev) {
                     if (employe.getPoste().equals(Employe.Poste.Developpeur) || employe.getPoste().equals(Employe.Poste.Resp_technique)) {
                         effectif++;
